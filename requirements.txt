@@ -1,0 +1,30 @@
+# Core dependencies
+torch
+torchvision
+
+# General utilities
+joblib
+tqdm
+numpy
+Pillow
+
+# Point cloud processing
+plyfile
+natsort
+
+# Image processing
+opencv-python
+kornia
+scipy
+scikit-image
+
+# Vector quantization
+einops
+
+# pybind11 for building submodules
+pybind11
+
+# Submodules (install after main requirements)
+# pip install submodules/diff_gaussian_rasterization_df
+# pip install submodules/simple-knn
+# pip install submodules/imcl-compression
