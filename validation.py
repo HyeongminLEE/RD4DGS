@@ -125,13 +125,13 @@ def render_set(model_path, name, iteration, scene, gaussians, pipeline, backgrou
     print("Set " + name + ", PSNR: ", psnr_sum / count, ", Count: ", count)
 
 
-def render_sets(dataset : ModelParams, iteration : int, opt : OptimizationParams, pipeline : PipelineParams, skip_train : bool, train_inverval : int, skip_test : bool, save_img : bool):
+def render_sets(dataset : ModelParams, iteration : int, opt : OptimizationParams, pipeline : PipelineParams, skip_train : bool, train_inverval : int, skip_test : bool, save_img : bool, use_ckpt : bool):
     with torch.no_grad():
         vq_cfg = get_vq_cfg(opt)
         gaussians = GaussianModel(dataset.sh_degree, dataset.duration, dataset.time_interval, dataset.time_pad, interp_type=dataset.interp_type, time_pad_type=dataset.time_pad_type, vq_cfg=vq_cfg)
 
         # Pass the potentially modified iteration value for loading
-        scene = Scene(dataset, gaussians, load_iteration=iteration, shuffle=False, opt=opt, use_bitstream=True)
+        scene = Scene(dataset, gaussians, load_iteration=iteration, shuffle=False, opt=opt, use_bitstream=(not use_ckpt))
 
         bg_color = [1,1,1]
         background = torch.tensor(bg_color, dtype=torch.float32, device="cuda")
@@ -157,11 +157,12 @@ if __name__ == "__main__":
     parser.add_argument("--save_img", action="store_true")
     parser.add_argument("--measure_time", action="store_true")
     parser.add_argument("--suffix", default="", type=str)
-    parser.add_argument("--static_or_dynamic", type=str, choices=["static", "dynamic", "both"], required=True)
+    parser.add_argument("--static_or_dynamic", type=str, choices=["static", "dynamic", "both"], default="both")
+    parser.add_argument("--use_ckpt", action="store_true")
     args = get_combined_args(parser)
     print("Rendering " + args.model_path)
 
     # Initialize system state (RNG)
     safe_state(args.quiet)
 
-    render_sets(model.extract(args), args.iteration, opt.extract(args), pipeline.extract(args), args.skip_train, args.train_inverval, args.skip_test, args.save_img)
+    render_sets(model.extract(args), args.iteration, opt.extract(args), pipeline.extract(args), args.skip_train, args.train_inverval, args.skip_test, args.save_img, args.use_ckpt)
