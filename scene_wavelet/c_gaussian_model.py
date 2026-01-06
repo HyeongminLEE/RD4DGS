@@ -435,7 +435,7 @@ class CGaussianModel:
         self.motion_error_denom = motion_error_denom
         self.optimizer.load_state_dict(opt_dict)
         if quant_dict is not None:
-            self._quantizer.load_state_dict(quant_dict)
+            self._quantizer.load_state_dict(quant_dict, strict=False)
 
     @property
     def get_static_scaling(self):
