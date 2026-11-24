@@ -2042,7 +2042,7 @@ class CGaussianModel:
         # np.savez(os.path.join(vq_path, 'opacity_static.npz'), opacity=opacity)
         # np.savez(os.path.join(vq_path, 'opacity_motion.npz'), opacity=opacity_motion)
         # np.savez(os.path.join(vq_path, 'opacity_center.npz'), opacity=opacity_center)
-        np.savez(os.path.join(vq_path, 'opacity_var.npz'), opacity=opacity_var)
+        np.savez_compressed(os.path.join(vq_path, 'opacity_var.npz'), opacity=opacity_var)
 
         dict_opacity_static = {}
         (dict_opacity_static['quantized_opacities'],
@@ -2119,12 +2119,12 @@ class CGaussianModel:
             f.write(opacity_header_bitstream_center)
             # f.write(opacity_header_bitstream_var)
 
-        np.savez(os.path.join(vq_path, 'sort_idx.npz'), sort_idx=sort_idx)
-        np.savez(os.path.join(vq_path, 'codebook.npz'), **vq_codebooks)
-        np.savez(os.path.join(vq_path, 'logits.npz'), **vq_logits)
-        np.savez(os.path.join(vq_path, 'position_static.npz'), position=xyz)
-        np.savez(os.path.join(vq_path, 'position_disp.npz'), position=xyz_disp)
-        np.savez(os.path.join(vq_path, 'motion_wavelet_approx.npz'), position=coeffs_approx_np)
+        np.savez_compressed(os.path.join(vq_path, 'sort_idx.npz'), sort_idx=sort_idx)
+        np.savez_compressed(os.path.join(vq_path, 'codebook.npz'), **vq_codebooks)
+        np.savez_compressed(os.path.join(vq_path, 'logits.npz'), **vq_logits)
+        np.savez_compressed(os.path.join(vq_path, 'position_static.npz'), position=xyz)
+        np.savez_compressed(os.path.join(vq_path, 'position_disp.npz'), position=xyz_disp)
+        np.savez_compressed(os.path.join(vq_path, 'motion_wavelet_approx.npz'), position=coeffs_approx_np)
         with open(os.path.join(vq_path, 'is_even.bin'), "wb") as f:
             f.write(np.array([is_even], dtype=np.uint8).tobytes())
 
